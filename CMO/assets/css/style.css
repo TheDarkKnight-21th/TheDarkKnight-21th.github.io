@@ -620,6 +620,15 @@ tr.ours td {
   padding: 16px;
 }
 
+.conceptmix-table {
+  padding: 12px;
+}
+
+.conceptmix-table img {
+  width: 100%;
+  object-fit: contain;
+}
+
 .small-table img {
   max-height: 470px;
   width: auto;
