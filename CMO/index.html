@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CMO | Correlation-Weighted Multi-Reward Optimization</title>
+  <meta name="description" content="Correlation-Weighted Multi-Reward Optimization for Compositional Generation." />
+  <meta property="og:title" content="CMO: Correlation-Weighted Multi-Reward Optimization" />
+  <meta property="og:description" content="A difficulty-aware multi-reward optimization framework for compositional text-to-image generation." />
+  <meta property="og:image" content="assets/images/overview.png" />
+  <link rel="icon" href="assets/images/cmo-mark.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div class="page-glow page-glow-a"></div>
+  <div class="page-glow page-glow-b"></div>
+
+  <header class="topbar" aria-label="Primary navigation">
+    <a class="brand" href="#top" aria-label="CMO home">
+      <img src="assets/images/cmo-mark.svg" alt="CMO logo" />
+      <span>CMO</span>
+    </a>
+    <nav>
+      <a href="#abstract">Abstract</a>
+      <a href="#method">Method</a>
+      <a href="#results">Results</a>
+      <a href="#visualization">Visualization</a>
+      <a href="#bibtex">BibTeX</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero section-pad">
+
+      <div class="hero-kicker">
+        <span>ECCV 2026</span>
+        <span>Compositional Text-to-Image Generation</span>
+      </div>
+
+      <h1>Correlation-Weighted Multi-Reward Optimization for Compositional Generation</h1>
+
+      <p class="subtitle">
+        CMO dynamically reweights fine-grained concept rewards using reward correlations,
+        emphasizing hard-to-satisfy and conflicting concepts during diffusion RL fine-tuning.
+      </p>
+
+      <img class="hero-logo" src="assets/images/cmo_logo_tight.png" alt="CMO"  width="500" />
+
+      <div class="authors" aria-label="Authors">
+        <a href="#">Jungmyung Wi</a><sup>1</sup>,
+        <a href="#">Hyunsoo Kim</a><sup>1,2</sup>,
+        <a href="#">Donghyun Kim</a><sup>1†</sup>
+      </div>
+      <div class="affiliations">
+        <span><sup>1</sup>Korea University</span>
+        <span><sup>2</sup>Korea Institute of Science and Technology</span>
+      </div>
+
+      <div class="action-row" aria-label="Project links">
+        <a class="pill primary" href="https://arxiv.org/abs/2603.18528" target="_blank" rel="noopener noreferrer">📄 Paper</a>
+        <a class="pill" href="https://github.com/TheDarkKnight-21th/CMO" target="_blank" rel="noopener noreferrer">💻 Code</a>
+        <a class="pill" href="https://huggingface.co/collections/Bruece/cmo" target="_blank" rel="noopener noreferrer">🤗 Model</a>
+      </div>
+
+      <div class="hero-card" aria-label="Method summary">
+        <div class="mini-matrix" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div>
+          <p class="eyebrow">Core idea</p>
+          <h2>Reward interactions reveal compositional difficulty.</h2>
+          <p>
+            Instead of averaging rewards equally, CMO estimates which concepts conflict across generated samples and gives them stronger optimization signals.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-pad compact" aria-label="Highlights">
+      <div class="stat-grid">
+        <article class="stat-card">
+          <span class="stat-label">GenEval 2</span>
+          <strong>34.0</strong>
+          <p>Soft TIFA<sub>GM</sub>, improving prompt-level correctness.</p>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">T2I-CompBench</span>
+          <strong>0.6141</strong>
+          <p>Best average score with SD3.5 + CMO.</p>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">ConceptMix</span>
+          <strong>0.1883</strong>
+          <p>Full Mark at the hardest K = 7 level.</p>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Training</span>
+          <strong>4 GPUs</strong>
+          <p>LoRA fine-tuning setup for SD3.5 and FLUX.1-dev.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="abstract" class="section-pad two-col">
+      <div class="section-heading sticky-heading">
+        <p class="eyebrow">Abstract</p>
+        <h2>Balancing many rewards without letting easy concepts dominate.</h2>
+      </div>
+      <div class="copy-card">
+        <p>
+          Text-to-image models have improved substantially, yet dense compositional prompts still often result in partial success: the model may generate the correct objects while missing the requested count, attribute, or spatial relation.
+        </p>
+        <p>
+          CMO addresses this challenge by decomposing prompts into concept-level rewards and estimating the correlation structure among them across generated samples. Concepts that are negatively correlated or inconsistently satisfied receive higher weights, guiding reward optimization toward simultaneous concept satisfaction.
+        </p>
+        <div class="contribution-list">
+          <div><span>01</span><p>Fine-grained reward decomposition for objects, attributes, numeracy, size, and spatial relations.</p></div>
+          <div><span>02</span><p>Correlation-based difficulty estimation that detects hard-to-align concept interactions.</p></div>
+          <div><span>03</span><p>Consistent improvements on ConceptMix, GenEval 2, and T2I-CompBench with SD3.5 and FLUX.1-dev.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="method" class="section-pad">
+      <div class="section-heading center">
+        <p class="eyebrow">Method Overview</p>
+        <h2>Correlation-weighted multi-reward optimization</h2>
+        <p>
+          CMO converts a multi-concept prompt into a reward matrix, estimates concept conflicts through correlations, and aggregates normalized advantages with adaptive concept weights.
+        </p>
+      </div>
+
+      <figure class="figure-card hero-figure">
+        <img class="zoomable" src="assets/images/overview.png" alt="Overview of Correlation-Weighted Multi-Reward Optimization" />
+        <figcaption>
+          Overview of CMO: concept-specific reward evaluation, reward matrix construction, correlation-based reweighting, and policy optimization.
+        </figcaption>
+      </figure>
+
+      <div class="method-steps">
+        <article>
+          <span>Step 1</span>
+          <h3>Decompose prompts</h3>
+          <p>Extract objects, attributes, numeracy, size, and spatial relations as independent concept objectives.</p>
+        </article>
+        <article>
+          <span>Step 2</span>
+          <h3>Build reward matrix</h3>
+          <p>Evaluate a group of generated images with dedicated reward functions to obtain concept-wise rewards.</p>
+        </article>
+        <article>
+          <span>Step 3</span>
+          <h3>Estimate difficulty</h3>
+          <p>Compute correlations between rewards; weakly or negatively correlated concepts are treated as harder.</p>
+        </article>
+        <article>
+          <span>Step 4</span>
+          <h3>Optimize policy</h3>
+          <p>Reweight normalized advantages so the model focuses on jointly satisfying difficult concepts.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="results" class="section-pad results-section">
+      <div class="section-heading center">
+        <p class="eyebrow">Quantitative Results</p>
+        <h2>Stronger compositional generation across strict benchmarks</h2>
+        <p>
+          CMO improves exact multi-concept success, prompt-level Soft-TIFA, and fine-grained attribute binding.
+        </p>
+      </div>
+
+      <div class="results-grid">
+        <article class="result-panel table-panel">
+          <div class="panel-head">
+            <p class="eyebrow">ConceptMix</p>
+            <h3>Full Mark Score across task complexity</h3>
+          </div>
+          <div class="responsive-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>K=1</th><th>K=2</th><th>K=3</th><th>K=4</th><th>K=5</th><th>K=6</th><th>K=7</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>FLUX.1-dev</td><td>0.6647</td><td>0.4127</td><td>0.2680</td><td>0.1620</td><td>0.1173</td><td>0.0567</td><td>0.0372</td></tr>
+                <tr><td>FlowGRPO</td><td>0.7600</td><td>0.5457</td><td>0.3517</td><td>0.2103</td><td>0.1727</td><td>0.0827</td><td>0.0713</td></tr>
+                <tr><td>PrefGRPO</td><td>0.7037</td><td>0.4790</td><td>0.3023</td><td>0.2120</td><td>0.1603</td><td>0.0897</td><td>0.0647</td></tr>
+                <tr><td>Qwen-Image</td><td>0.8183</td><td>0.6583</td><td>0.5060</td><td>0.3803</td><td>0.3353</td><td>0.2213</td><td>0.1747</td></tr>
+                <tr class="ours"><td>CMO</td><td>0.8410</td><td>0.7063</td><td>0.5700</td><td>0.3947</td><td>0.3560</td><td>0.2317</td><td>0.1883</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="result-panel geneval-panel">
+          <div class="panel-head">
+            <p class="eyebrow">GenEval 2</p>
+            <h3>Soft-TIFA evaluation</h3>
+          </div>
+          <figure class="image-shell small-table">
+            <img class="zoomable" src="assets/images/geneval2_eval.png" alt="Soft-TIFA evaluation table on GenEval 2" />
+          </figure>
+        </article>
+      </div>
+
+      <article class="result-panel wide-panel">
+        <div class="panel-head split">
+          <div>
+            <p class="eyebrow">T2I-CompBench</p>
+            <h3>Attribute binding, relationships, numeracy, and complex composition</h3>
+          </div>
+          <div class="score-badge">Avg. 0.6141</div>
+        </div>
+        <figure class="image-shell wide-table">
+          <img class="zoomable" src="assets/images/t2i_compbench_eval.png" alt="Evaluation results on T2I-CompBench" />
+        </figure>
+      </article>
+    </section>
+
+    <section id="visualization" class="section-pad visualization-section">
+      <div class="section-heading center">
+        <p class="eyebrow">Image Visualization</p>
+        <h2>Qualitative comparisons</h2>
+        <p>
+          Following the quantitative sections, the final section shows generated images across compositional prompts and increasing concept complexity.
+        </p>
+      </div>
+
+      <div class="visual-grid">
+        <figure class="figure-card visual-wide">
+          <img class="zoomable" src="assets/images/conceptmix_qualitative.png" alt="Qualitative comparison across ConceptMix task complexity levels" />
+          <figcaption>
+            ConceptMix qualitative comparison from K = 1 to K = 7. CMO maintains object, attribute, count, and spatial faithfulness as complexity increases.
+          </figcaption>
+        </figure>
+
+        <figure class="figure-card visual-tall">
+          <img class="zoomable" src="assets/images/t2i_qualitative.png" alt="Qualitative comparison on T2I-CompBench prompts" />
+          <figcaption>
+            T2I-CompBench qualitative comparison across attribute binding, spatial relations, and numeracy prompts.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="bibtex" class="section-pad two-col bib-section">
+      <div class="section-heading sticky-heading">
+        <p class="eyebrow">Citation</p>
+        <h2>BibTeX</h2>
+      </div>
+      <div class="bib-card">
+        <button id="copyBib" class="copy-button" type="button">Copy BibTeX</button>
+<pre><code id="bibtexText">@article{wi2026cmo,
+  title   = {Correlation-Weighted Multi-Reward Optimization for Compositional Generation},
+  author  = {Wi, Jungmyung and Kim, Hyunsoo and Kim, Donghyun},
+  journal = {arXiv preprint arXiv:2603.18528},
+  year    = {2026}
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 CMO Project. Built for GitHub Pages.</p>
+  </footer>
+
+  <div class="modal" id="imageModal" aria-hidden="true" role="dialog" aria-label="Expanded figure">
+    <button class="modal-close" type="button" aria-label="Close expanded figure">×</button>
+    <img alt="Expanded figure" />
+  </div>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
