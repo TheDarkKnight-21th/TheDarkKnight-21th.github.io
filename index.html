@@ -1,0 +1,454 @@
+from pathlib import Path
+
+html = r'''<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Personal academic homepage of Jungmyung Wi." />
+  <title>Jungmyung Wi</title>
+
+  <style>
+    :root {
+      --bg: #f8fbff;
+      --text: #0f172a;
+      --muted: #5f6f89;
+      --line: #dbe7f5;
+      --blue: #2563eb;
+      --blue2: #7c3aed;
+      --card: rgba(255, 255, 255, 0.78);
+      --shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(37, 99, 235, 0.15), transparent 28%),
+        radial-gradient(circle at 88% 18%, rgba(124, 58, 237, 0.13), transparent 30%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: min(1100px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 18px;
+      z-index: 10;
+      margin-top: 18px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.76);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.07);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: white;
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.22);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      color: #32425d;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .hero {
+      padding: 105px 0 66px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border: 1px solid #cfe0ff;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 14px;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.08);
+    }
+
+    h1 {
+      margin: 26px auto 16px;
+      max-width: 900px;
+      font-size: clamp(48px, 8vw, 96px);
+      line-height: 0.95;
+      letter-spacing: -0.075em;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: clamp(18px, 2vw, 23px);
+      line-height: 1.75;
+      letter-spacing: -0.015em;
+    }
+
+    .hero-actions {
+      margin-top: 34px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 19px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 15px;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+    }
+
+    .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, #4f46e5, #2563eb);
+    }
+
+    .btn-dark {
+      color: white;
+      background: #111827;
+    }
+
+    section {
+      padding: 26px 0;
+    }
+
+    .section-card {
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 4vw, 44px);
+    }
+
+    .section-title {
+      margin: 0 0 10px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.05;
+      letter-spacing: -0.05em;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.75;
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .mini-card {
+      padding: 20px;
+      border-radius: 24px;
+      border: 1px solid rgba(219, 231, 245, 0.95);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .mini-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 17px;
+      letter-spacing: -0.02em;
+    }
+
+    .project-card {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .project-main {
+      padding: 28px;
+      border-radius: 28px;
+      color: white;
+      background:
+        radial-gradient(circle at 80% 15%, rgba(255,255,255,0.20), transparent 26%),
+        linear-gradient(135deg, #111827, #1d4ed8 55%, #7c3aed);
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .project-main::after {
+      content: "";
+      position: absolute;
+      right: -70px;
+      bottom: -90px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .project-main h3 {
+      position: relative;
+      margin: 0;
+      max-width: 680px;
+      font-size: clamp(28px, 4vw, 46px);
+      line-height: 1.05;
+      letter-spacing: -0.055em;
+    }
+
+    .project-main p {
+      position: relative;
+      color: rgba(255, 255, 255, 0.82);
+      max-width: 620px;
+      margin-top: 16px;
+    }
+
+    .project-side {
+      display: grid;
+      gap: 14px;
+    }
+
+    .project-link {
+      padding: 20px;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.78);
+      font-weight: 850;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer {
+      padding: 54px 0 70px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 760px) {
+      .nav {
+        border-radius: 24px;
+        align-items: flex-start;
+        gap: 12px;
+        flex-direction: column;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 13px;
+      }
+
+      .hero {
+        padding-top: 72px;
+      }
+
+      .grid,
+      .project-card {
+        grid-template-columns: 1fr;
+      }
+
+      .section-card {
+        border-radius: 26px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <nav class="nav">
+      <a class="brand" href="./">
+        <span class="brand-mark">JW</span>
+        <span>Jungmyung Wi</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#research">Research</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow">Graduate Student Researcher · Korea University</div>
+        <h1>Jungmyung Wi</h1>
+        <p class="subtitle">
+          I work on text-to-image generation, diffusion model alignment, and
+          reward optimization for compositional visual generation.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#projects">View Projects</a>
+          <a class="btn btn-dark" href="https://github.com/TheDarkKnight-21th">GitHub</a>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="section-card">
+          <div class="section-title">About</div>
+          <h2>Hello, I am Jungmyung.</h2>
+          <p>
+            I am a graduate student researcher at Korea University. My current research focuses on
+            improving compositional text-to-image generation by designing structured reward signals
+            and efficient reinforcement learning strategies for diffusion and flow-based models.
+          </p>
+
+          <div class="grid">
+            <div class="mini-card">
+              <strong>Research Area</strong>
+              <p>Text-to-image generation, diffusion models, and multimodal alignment.</p>
+            </div>
+            <div class="mini-card">
+              <strong>Current Focus</strong>
+              <p>Reward optimization for multi-concept and compositional generation.</p>
+            </div>
+            <div class="mini-card">
+              <strong>Affiliation</strong>
+              <p>Korea University.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="research">
+        <div class="section-card">
+          <div class="section-title">Research</div>
+          <h2>Making generative models follow complex prompts.</h2>
+          <p>
+            My work studies how generative models can satisfy multiple visual concepts simultaneously,
+            including objects, attributes, numeracy, spatial relations, and fine-grained bindings.
+            I am especially interested in reward design, preference alignment, and scalable training
+            methods for high-quality visual generation.
+          </p>
+        </div>
+      </section>
+
+      <section id="projects">
+        <div class="section-card">
+          <div class="section-title">Projects</div>
+          <h2>Selected project pages</h2>
+
+          <div class="project-card">
+            <a class="project-main" href="./CMO/">
+              <div>
+                <h3>Correlation-Weighted Multi-Reward Optimization</h3>
+                <p>
+                  CMO dynamically reweights fine-grained concept rewards using reward correlations,
+                  emphasizing hard-to-satisfy and conflicting concepts during diffusion RL fine-tuning.
+                </p>
+              </div>
+              <span class="btn btn-primary" style="width:max-content; margin-top:24px;">Open CMO Page →</span>
+            </a>
+
+            <div class="project-side">
+              <a class="project-link" href="https://arxiv.org/abs/2603.18528">
+                <span>CMO Paper</span><span>↗</span>
+              </a>
+              <a class="project-link" href="https://github.com/TheDarkKnight-21th/CMO">
+                <span>CMO Code</span><span>↗</span>
+              </a>
+              <a class="project-link" href="https://huggingface.co/collections/Bruece/cmo">
+                <span>CMO Models</span><span>↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="section-card">
+          <div class="section-title">Contact</div>
+          <h2>Contact</h2>
+          <p>
+            Email: <a href="mailto:wjm333@korea.ac.kr" style="color:#2563eb; font-weight:800;">wjm333@korea.ac.kr</a>
+            <br />
+            GitHub: <a href="https://github.com/TheDarkKnight-21th" style="color:#2563eb; font-weight:800;">TheDarkKnight-21th</a>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      © 2026 Jungmyung Wi. Built with GitHub Pages.
+    </footer>
+  </div>
+</body>
+</html>
+'''
+
+out = Path("/mnt/data/github_io_home_index.html")
+out.write_text(html, encoding="utf-8")
+print(out)
