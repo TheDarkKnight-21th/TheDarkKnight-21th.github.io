@@ -1,6 +1,4 @@
-from pathlib import Path
-
-html = r'''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -352,7 +350,7 @@ html = r'''<!DOCTYPE html>
 
         <div class="hero-actions">
           <a class="btn btn-primary" href="#projects">View Projects</a>
-          <a class="btn btn-dark" href="https://github.com/TheDarkKnight-21th">GitHub</a>
+          <a class="btn btn-dark" href="https://github.com/TheDarkKnight-21th" target="_blank" rel="noopener noreferrer">GitHub</a>
         </div>
       </section>
 
@@ -414,13 +412,13 @@ html = r'''<!DOCTYPE html>
             </a>
 
             <div class="project-side">
-              <a class="project-link" href="https://arxiv.org/abs/2603.18528">
+              <a class="project-link" href="https://arxiv.org/abs/2603.18528" target="_blank" rel="noopener noreferrer">
                 <span>CMO Paper</span><span>↗</span>
               </a>
-              <a class="project-link" href="https://github.com/TheDarkKnight-21th/CMO">
+              <a class="project-link" href="https://github.com/TheDarkKnight-21th/CMO" target="_blank" rel="noopener noreferrer">
                 <span>CMO Code</span><span>↗</span>
               </a>
-              <a class="project-link" href="https://huggingface.co/collections/Bruece/cmo">
+              <a class="project-link" href="https://huggingface.co/collections/Bruece/cmo" target="_blank" rel="noopener noreferrer">
                 <span>CMO Models</span><span>↗</span>
               </a>
             </div>
@@ -435,7 +433,7 @@ html = r'''<!DOCTYPE html>
           <p>
             Email: <a href="mailto:wjm333@korea.ac.kr" style="color:#2563eb; font-weight:800;">wjm333@korea.ac.kr</a>
             <br />
-            GitHub: <a href="https://github.com/TheDarkKnight-21th" style="color:#2563eb; font-weight:800;">TheDarkKnight-21th</a>
+            GitHub: <a href="https://github.com/TheDarkKnight-21th" target="_blank" rel="noopener noreferrer" style="color:#2563eb; font-weight:800;">TheDarkKnight-21th</a>
           </p>
         </div>
       </section>
@@ -447,8 +445,3 @@ html = r'''<!DOCTYPE html>
   </div>
 </body>
 </html>
-'''
-
-out = Path("/mnt/data/github_io_home_index.html")
-out.write_text(html, encoding="utf-8")
-print(out)
