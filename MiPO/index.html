@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MiPO | Minority Preference Optimization</title>
+  <meta name="description" content="Self-Improving Diffusion Classifiers with Minority Preference Optimization." />
+  <meta property="og:title" content="MiPO: Self-Improving Diffusion Classifiers" />
+  <meta property="og:description" content="A LoRA + GRPO framework that improves diffusion classifiers by strengthening minority-region generative coverage." />
+  <meta property="og:image" content="https://TheDarkKnight-21th.github.io/MiPO/assets/images/overview.png" />
+  <meta property="og:url" content="https://TheDarkKnight-21th.github.io/MiPO/" />
+  <meta property="og:type" content="website" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://TheDarkKnight-21th.github.io/MiPO/" />
+  <link rel="icon" href="assets/images/mipo-mark.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div class="page-glow page-glow-a"></div>
+  <div class="page-glow page-glow-b"></div>
+
+  <header class="topbar" aria-label="Primary navigation">
+    <a class="brand" href="#top" aria-label="MiPO home">
+      <img class="brand-mark" src="assets/images/mipo-mark.svg" alt="MiPO logo mark" />
+      <span>MiPO</span>
+    </a>
+    <nav>
+      <a href="#abstract">Abstract</a>
+      <a href="#method">Method</a>
+      <a href="#results">Results</a>
+      <a href="#visualization">Visualization</a>
+      <a href="#bibtex">BibTeX</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero section-pad">
+      <div class="hero-kicker">
+        <span>ECCV 2026</span>
+        <span>Diffusion Classifier</span>
+        <span>Minority Sampling</span>
+      </div>
+
+      <h1>Self-Improving Diffusion Classifiers with Minority Preference Optimization</h1>
+
+      <p class="subtitle">
+        MiPO fine-tunes text-to-image diffusion models with minority preference rewards,
+        expanding low-density generative coverage and improving zero-shot diffusion classification.
+      </p>
+
+      <img class="hero-logo mipo-logo" src="assets/images/MiPO_logo_tight.png" alt="MiPO" width="760" />
+
+      <div class="authors" aria-label="Authors">
+        <a href="https://gustn9609.github.io/">Hyunsoo Kim</a><sup>*1</sup>,
+        <a href="https://thedarkknight-21th.github.io/">Jungmyung Wi</a><sup>*1</sup>,
+        <span>Soobin Um</span><sup>2</sup>,
+        <a href="https://utl.korea.ac.kr/team/">Donghyun Kim</a><sup>†1</sup>, and
+        <span>Suhyun Kim</span><sup>†3</sup>
+      </div>
+      <div class="affiliations">
+        <span><sup>1</sup>Korea University</span>
+        <span><sup>2</sup>Kook Min University</span>
+        <span><sup>3</sup>Kyung Hee University</span>
+      </div>
+
+      <div class="action-row" aria-label="Project links">
+        <a class="pill primary" href="#method">🔥 Method</a>
+        <a class="pill" href="#results">📊 Results</a>
+        <a class="pill" href="#bibtex">📄 Citation</a>
+      </div>
+
+      <div class="hero-card" aria-label="Method summary">
+        <div class="density-orbit" aria-hidden="true">
+          <span class="density-label">low-density<br />coverage</span>
+        </div>
+        <div>
+          <p class="eyebrow">Core idea</p>
+          <h2>What the model cannot generate well, it struggles to recognize.</h2>
+          <p>
+            MiPO turns minority sampling into a self-improving signal: generated samples with higher minority scores receive stronger policy updates, helping the diffusion model better represent undercovered visual regions.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-pad compact" aria-label="Highlights">
+      <div class="stat-grid">
+        <article class="stat-card">
+          <span class="stat-label">Training Data</span>
+          <strong>0</strong>
+          <p>Additional real images required for minority preference optimization.</p>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Policy Learning</span>
+          <strong>LoRA</strong>
+          <p>Compact plug-and-play adapter trained with GRPO.</p>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Coverage Gain</span>
+          <strong>+3.8%</strong>
+          <p>Maximum zero-shot classification improvement reported across benchmarks.</p>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Generation Speed</span>
+          <strong>1s</strong>
+          <p>Per image, matching DDIM while remaining prompt-adaptive.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="abstract" class="section-pad two-col">
+      <div class="section-heading sticky-heading">
+        <p class="eyebrow">Abstract</p>
+        <h2>Improving diffusion perception by strengthening minority generation.</h2>
+      </div>
+      <div class="copy-card">
+        <p>
+          Diffusion classifiers perform robust zero-shot classification, but their perception is biased toward majority, high-density regions of the pretrained data manifold. Minority, low-density concepts are often poorly generated and therefore less accurately recognized.
+        </p>
+        <p>
+          MiPO reveals and exploits the connection between minority sampling and diffusion-classifier perception. Instead of relying on extra image data, external reward models, or per-prompt optimization, MiPO uses arbitrary caption prompts to self-generate samples, score minority preference, and fine-tune the diffusion model itself.
+        </p>
+        <div class="contribution-list">
+          <div><span>01</span><p>Reveals that diffusion classifier errors are strongly tied to undercovered minority regions of the generative distribution.</p></div>
+          <div><span>02</span><p>Introduces a DDIM reconstruction discrepancy based minority preference reward for self-improving diffusion models.</p></div>
+          <div><span>03</span><p>Combines GRPO, LoRA, KL regularization, and selective early-timestep updates for stable prompt-adaptive optimization.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="method" class="section-pad">
+      <div class="section-heading center">
+        <p class="eyebrow">Method Overview</p>
+        <h2>Minority Preference Optimization</h2>
+        <p>
+          MiPO samples multiple SDE trajectories from the same prompt and initial noise, rewards samples that lie in minority regions, and updates only a compact LoRA policy while preserving the pretrained diffusion prior.
+        </p>
+      </div>
+
+      <figure class="figure-card hero-figure">
+        <img class="zoomable" src="assets/images/overview.png" alt="Overview of Minority Preference Optimization" />
+        <figcaption>
+          Overview of MiPO: selective early-timestep policy optimization, DDIM-based minority preference reward, group-relative advantage computation, and KL-regularized GRPO updates.
+        </figcaption>
+      </figure>
+
+      <div class="method-steps">
+        <article>
+          <span>Step 1</span>
+          <h3>Generate groups</h3>
+          <p>Sample multiple SDE trajectories for each prompt using the same initial noise to form stable comparison groups.</p>
+        </article>
+        <article>
+          <span>Step 2</span>
+          <h3>Score minority</h3>
+          <p>Compute DDIM reconstruction discrepancy as a minority score: larger error indicates weaker denoiser coverage.</p>
+        </article>
+        <article>
+          <span>Step 3</span>
+          <h3>Normalize rewards</h3>
+          <p>Use GRPO to convert group-level rewards into relative advantages, making optimization robust to reward scale.</p>
+        </article>
+        <article>
+          <span>Step 4</span>
+          <h3>Update LoRA</h3>
+          <p>Fine-tune early denoising timesteps with KL regularization so minority coverage improves without drifting from the prior.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="results" class="section-pad results-section">
+      <div class="section-heading center">
+        <p class="eyebrow">Quantitative Results</p>
+        <h2>Better zero-shot diffusion classification and efficient minority generation</h2>
+        <p>
+          MiPO improves most zero-shot classification benchmarks for SD 1.5 and SD 2.0, while also producing minority-oriented samples at DDIM-level inference speed.
+        </p>
+      </div>
+
+      <article class="result-panel table-panel">
+        <div class="panel-head split">
+          <div>
+            <p class="eyebrow">Zero-shot Classification</p>
+            <h3>Diffusion classifier accuracy on SD 1.5 and SD 2.0</h3>
+          </div>
+          <div class="score-badge">SD2.0 SUN09 69.26</div>
+        </div>
+        <figure class="image-shell wide-table">
+          <img class="zoomable" src="assets/images/zerosho_eval.png" alt="Zero-shot classification accuracy table for MiPO" />
+        </figure>
+        <div class="result-kpi-grid">
+          <div class="kpi-card"><strong>87.89</strong><span>CIFAR10 accuracy with SD1.5 + MiPO.</span></div>
+          <div class="kpi-card"><strong>65.33</strong><span>CIFAR10-C accuracy with SD2.0 + MiPO.</span></div>
+          <div class="kpi-card"><strong>55.25</strong><span>ImageNet-Tiny accuracy with SD2.0 + MiPO.</span></div>
+          <div class="kpi-card"><strong>99.93</strong><span>Caltech accuracy with SD2.0 + MiPO.</span></div>
+        </div>
+      </article>
+
+      <article class="result-panel wide-panel">
+        <div class="panel-head split">
+          <div>
+            <p class="eyebrow">Minority Generation</p>
+            <h3>Prompt-adaptive generation without per-prompt optimization</h3>
+          </div>
+          <div class="score-badge">Time 1s / image</div>
+        </div>
+        <figure class="image-shell wide-table">
+          <img class="zoomable" src="assets/images/vis_eval.png" alt="Quantitative comparison of minority-oriented image generation" />
+        </figure>
+      </article>
+    </section>
+
+    <section id="visualization" class="section-pad visualization-section">
+      <div class="section-heading center">
+        <p class="eyebrow">Image Visualization</p>
+        <h2>Qualitative minority samples</h2>
+        <p>
+          Compared with vanilla DDIM, MiPO produces richer minority details and more diverse local structures while remaining fully prompt-adaptive.
+        </p>
+      </div>
+
+      <figure class="figure-card visual-wide">
+        <img class="zoomable" src="assets/images/vis.png" alt="Qualitative comparison of DDIM, MinorityPrompt, and MiPO" />
+        <figcaption>
+          Qualitative comparison on MSCOCO validation prompts. MiPO improves minority details and concept diversity without the heavy per-prompt optimization required by MinorityPrompt.
+        </figcaption>
+      </figure>
+
+      <div class="analysis-grid">
+        <article class="analysis-card">
+          <p class="eyebrow">Additional Analysis</p>
+          <h3>Why not directly use MinorityPrompt?</h3>
+          <p>
+            MinorityPrompt learns prompt-specific low-density tokens during inference. Since diffusion classifiers must generalize to unseen class prompts and operate through forward-process noise prediction, prompt-specific reverse-process optimization is not directly compatible with diffusion-classifier evaluation.
+          </p>
+        </article>
+        <article class="analysis-card">
+          <p class="eyebrow">Failure Cases</p>
+          <h3>LabelME and VOC2007 contain ambiguous multi-object samples.</h3>
+          <p>
+            Supplementary analysis shows that performance drops on these domains are linked to multi-object contamination and single-label ambiguity, rather than a simple failure of MiPO to learn a better classifier.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="bibtex" class="section-pad two-col bib-section">
+      <div class="section-heading sticky-heading">
+        <p class="eyebrow">Citation</p>
+        <h2>BibTeX</h2>
+      </div>
+      <div class="bib-card">
+        <button id="copyBib" class="copy-button" type="button">Copy BibTeX</button>
+<pre><code id="bibtexText">@inproceedings{kim2026mipo,
+  title     = {Self-Improving Diffusion Classifiers with Minority Preference Optimization},
+  author    = {Kim, Hyunsoo and Wi, Jungmyung and Um, Soobin and Kim, Donghyun and Kim, Suhyun},
+  booktitle = {European Conference on Computer Vision (ECCV)},
+  year      = {2026}
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 MiPO Project. Built for GitHub Pages.</p>
+  </footer>
+
+  <div class="modal" id="imageModal" aria-hidden="true" role="dialog" aria-label="Expanded figure">
+    <button class="modal-close" type="button" aria-label="Close expanded figure">×</button>
+    <img alt="Expanded figure" />
+  </div>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
