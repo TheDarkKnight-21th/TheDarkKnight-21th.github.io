@@ -286,7 +286,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 16px;
       margin-top: 24px;
     }
@@ -377,6 +377,8 @@
     .tag {
       display: inline-flex;
       align-items: center;
+      flex-shrink: 0;
+      white-space: nowrap;
       padding: 6px 10px;
       border-radius: 999px;
       background: #eef4ff;
@@ -642,7 +644,7 @@
             <div class="eyebrow">Graduate Student Researcher · Artificial Intelligence</div>
             <h1>Jungmyung Wi</h1>
             <p class="subtitle">
-              I work on visual generative models, vision-language models, and domain transfer —
+              I work on visual generative models, vision-language models, and domain transfer
               with a focus on reward optimization and alignment for compositional text-to-image generation.
             </p>
 
@@ -673,8 +675,9 @@
           <p>
             I am a master's student in Artificial Intelligence at Korea University and a researcher in UTL Lab.
             My research interests include image generative models, text-to-image diffusion models,
-            vision-language models, and domain transfer. I enjoy building reward-driven training methods
-            that make visual models follow complex prompts more faithfully.
+            vision-language models, and domain transfer. Looking ahead, I am interested in whether
+            foundation models truly perceive and reason about the world, beyond simply improving them
+            with supervised fine-tuning.
           </p>
 
           <div class="grid">
@@ -683,12 +686,8 @@
               <p>Text-to-image generation, diffusion models, VLMs, domain generalization, and unsupervised domain adaptation.</p>
             </div>
             <div class="mini-card">
-              <strong>Current Focus</strong>
-              <p>Multi-concept reward optimization and reinforcement learning for compositional generation.</p>
-            </div>
-            <div class="mini-card">
-              <strong>Technical Stack</strong>
-              <p>Python, PyTorch, C, computer vision, machine learning, deep learning, and reinforcement learning.</p>
+              <strong>Future Work</strong>
+              <p>World models, vision-language-action models, and reasoning in LLMs and mLLMs.</p>
             </div>
           </div>
         </div>
@@ -845,7 +844,7 @@
               <div class="time">2022.07</div>
               <div>
                 <h3>Dacon Seoul Bike Rental Prediction</h3>
-                <p>Excellence Prize · Dankook University</p>
+                <p>Excellence Prize · Yongin City in Republic of Korea</p>
                 <p>Predicted bike rental demand using feature engineering and machine learning models.</p>
               </div>
             </div>
